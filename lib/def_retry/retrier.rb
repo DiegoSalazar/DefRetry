@@ -1,6 +1,6 @@
 module DefRetry
   class Retrier
-    DEFAULT_LIMIT = 3
+    DEFAULT_TRIES = 3
     SLEEP_STRATEGIES = {
       constant:    ->(n) { 1 },
       linear:      ->(n) { n },
@@ -9,7 +9,7 @@ module DefRetry
 
     def initialize(options, block)
       @block     = block
-      @limit     = options.fetch :limit, DEFAULT_LIMIT
+      @tries     = options.fetch :tries, DEFAULT_TRIES
       @on_retry  = options.fetch :on_retry, ->(e, n) {}
       @on_ensure = options.fetch :on_ensure, ->(r, n) {}
       @sleep     = options.fetch :sleep, false
@@ -28,19 +28,19 @@ module DefRetry
     end
 
     def run
-      @retry_count = 0
+      @try_count = 0
       @return = nil
 
       begin
         @return = @block.call
       rescue *@exceptions => e
-        @retry_count += 1
-        sleep @sleep.call(@retry_count) if @sleep
-        @on_retry.call e, @retry_count
+        @try_count += 1
+        sleep @sleep.call(@try_count) if @sleep
+        @on_retry.call e, @try_count
 
-        retry if @retry_count < @limit
+        retry if @try_count < @tries
       ensure
-        @on_ensure.call @return, @retry_count
+        @on_ensure.call @return, @try_count
         @return
       end
     end

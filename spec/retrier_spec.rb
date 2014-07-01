@@ -40,7 +40,7 @@ describe DefRetry::Retrier do
     it 'retries on exception :limit times' do
       retrier = DefRetry::Retrier.new({
         on: Exception,
-        limit: 2
+        tries: 2
       }, block_exception)
 
       retrier.run
@@ -111,7 +111,7 @@ describe DefRetry::Retrier do
         sleep: :constant,
         # the 1st retry will sleep for 1 second
         # the 2nd retry will sleep for 1 second
-        limit: 2
+        tries: 2
       }, block_exception)
 
       start_time = Time.now.to_i
@@ -129,7 +129,7 @@ describe DefRetry::Retrier do
         sleep: :linear,
         # the 1st retry will sleep for 1 second
         # the 2nd retry will sleep for 2 seconds, and so on
-        limit: 2
+        tries: 2
       }, block_exception)
 
       start_time = Time.now.to_i
@@ -147,7 +147,7 @@ describe DefRetry::Retrier do
         sleep: :exponential,
         # the 1st retry will sleep for 1**2 == 1 second
         # the 2nd retry will sleep for 2**2 == 4 seconds
-        limit: 2
+        tries: 2
       }, block_exception)
 
       start_time = Time.now.to_i
