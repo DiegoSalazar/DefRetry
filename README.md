@@ -1,6 +1,6 @@
 # DefRetry
 
-An expressive, fully spec'd, gem to add the Retry Pattern to your methods and/or objects. With DefRetry
+An expressive, fully spec'd gem to add the Retry Pattern to your methods and/or objects. With DefRetry
 you can define methods with retry logic built-in or you can wrap your code in a
 `retry` and specify options to customize the behavior.
 
