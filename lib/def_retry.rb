@@ -1,0 +1,28 @@
+require "def_retry/version"
+
+module DefRetry
+  autoload :Retrier, 'def_retry/retrier'
+
+  def self.included(base)
+    base.extend ClassMethods
+    base.send :include, InstanceMethods
+  end
+
+  def self.retry(options, &block)
+    Retrier.new(options, block).run
+  end
+
+  module ClassMethods
+    def def_retry(name, options = {}, &block)
+      define_method name do
+        DefRetry.retry options, &block
+      end
+    end
+  end
+
+  module InstanceMethods
+    def retry(options = {}, &block)
+      DefRetry.retry options, &block
+    end
+  end
+end
