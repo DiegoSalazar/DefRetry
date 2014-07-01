@@ -18,10 +18,10 @@ describe DefRetry do
     end
   end
 
-  context '#retry' do
+  context '#retryable' do
     it "returns the block's value" do
       mocked = mock_retryable.new
-      expect(mocked.retry(on: Exception) { 2 + 2 }).to be 4
+      expect(mocked.retryable(on: Exception) { 2 + 2 }).to be 4
     end
   end
 end

@@ -35,14 +35,14 @@ end
 ```
 
 This will define an instance method named `:get_data` and rescue the exception
-`ApiError` and retry the block
+`ApiError` and retry the block:
 
 ```ruby
 do
   do_api_call
 end
 ```
-3 times (the default)
+3 times (the default).
 
 ### Retrying a block of code
 
@@ -55,7 +55,7 @@ class ApiWrapper
   def get_data
     @some_state = 'start'
 
-    retry on: ApiError do
+    retryable on: ApiError do
       @some_state = 'working'
       do_api_call
     end
@@ -70,11 +70,11 @@ This will retry just that block of code.
 ### Options
 
 These apply to both `.def_retry` and `#retry`:
-  - on: a single class or an array of exception classes to be rescued
-  - tries: Integer number of maximum retries to run. DefRetry will stop retrying if the retry cound reaches this number
-  - sleep: Either a Proc that receives the current try count as its only argument or a Symbol naming one of these sleep strategies: constant, linear, exponential
-  - on_retry: a callback to run everytime a retry happens i.e. the specified expception(s) are rescued
-  - on_ensure: "a callback to run at the end before returning the block's value"
+  - `:on`: a single class or an array of exception classes to be rescued
+  - `:tries`: Integer number of maximum retries to run. DefRetry will stop retrying if the retry cound reaches this number
+  - `:sleep`: Either a Proc that receives the current try count as its only argument or a Symbol naming one of these sleep strategies: constant, linear, exponential
+  - `:on_retry`: a callback to run everytime a retry happens i.e. the specified expception(s) are rescued
+  - `:on_ensure`: "a callback to run at the end before returning the block's value"
 
 ## Contributing
 

@@ -21,7 +21,7 @@ module DefRetry
   end
 
   module InstanceMethods
-    def retry(options = {}, &block)
+    def retryable(options = {}, &block)
       DefRetry.retry options, &block
     end
   end
