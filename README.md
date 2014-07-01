@@ -58,9 +58,8 @@ class ApiWrapper
     retryable on: ApiError do
       @some_state = 'working'
       do_api_call
+      @some_state = 'done'
     end
-
-    @some_state = 'done'
   end
 end
 ```
