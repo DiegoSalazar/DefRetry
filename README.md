@@ -23,15 +23,15 @@ Or install it yourself as:
 ### Defining a retryable method
 
 ```ruby
-  require 'def_retry'
+require 'def_retry'
 
-  class ApiWrapper
-    include DefRetry
+class ApiWrapper
+  include DefRetry
 
-    def_retry :get_data, on: ApiError do
-      do_api_call
-    end
+  def_retry :get_data, on: ApiError do
+    do_api_call
   end
+end
 ```
 
 This will define an instance method named `:get_data` and rescue the exception
@@ -47,22 +47,22 @@ end
 ### Retrying a block of code
 
 ```ruby
-  require 'def_retry'
+require 'def_retry'
 
-  class ApiWrapper
-    include DefRetry
+class ApiWrapper
+  include DefRetry
 
-    def get_data
-      @some_state = 'start'
+  def get_data
+    @some_state = 'start'
 
-      retry on: ApiError do
-        @some_state = 'working'
-        do_api_call
-      end
-
-      @some_state = 'done'
+    retry on: ApiError do
+      @some_state = 'working'
+      do_api_call
     end
+
+    @some_state = 'done'
   end
+end
 ```
 
 This will retry just that block of code.
