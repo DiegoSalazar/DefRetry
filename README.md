@@ -69,11 +69,11 @@ This will retry just that block of code.
 ### Options
 
 These apply to both `.def_retry` and `#retry`:
-  - `:on`: a single class or an array of exception classes to be rescued
+  - `:on`: A single class or an array of exception classes to be rescued
   - `:tries`: Integer number of maximum retries to run. DefRetry will stop retrying if the retry count reaches this number
   - `:sleep`: Either a Proc that receives the current try count as its only argument or a Symbol naming one of these sleep strategies: constant, linear, exponential (see: `DefRetry::Retrier::SLEEP_STRATEGIES`)
-  - `:on_retry`: a callback to run everytime a retry happens i.e. the specified exception(s) are rescued
-  - `:on_ensure`: a callback to run at the end before returning the block's value
+  - `:on_retry`: A callback to run every time a retry happens i.e. the specified exception(s) are rescued. It will receive the exception that was rescued and the current try count as arguments, respectively.
+  - `:on_ensure`: A callback to run at the end before returning the block's value. It will receive the block's return value and the current try count as arguments, respectively.
 
 ## Contributing
 
