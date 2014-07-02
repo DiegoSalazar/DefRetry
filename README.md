@@ -1,6 +1,6 @@
 [![Gem Version](https://badge.fury.io/rb/def_retry.svg)](http://badge.fury.io/rb/def_retry)
 
-
+[![Build Status](https://travis-ci.org/DiegoSalazar/DefRetry.svg?branch=master)](https://travis-ci.org/DiegoSalazar/DefRetry)
 
 # DefRetry
 
