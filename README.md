@@ -1,3 +1,7 @@
+[![Gem Version](https://badge.fury.io/rb/def_retry.svg)](http://badge.fury.io/rb/def_retry)
+
+
+
 # DefRetry
 
 An expressive, fully spec'd gem to add the Retry Pattern to your methods and/or objects. With DefRetry

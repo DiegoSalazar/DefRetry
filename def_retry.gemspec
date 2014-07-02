@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["diego@greyrobot.com"]
   spec.summary       = %q{The Retry Pattern in a gem.}
   spec.description   = %q{Allows you to define methods that will retry on exception or declare blocks of code with retry.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/DiegoSalazar/DefRetry"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
