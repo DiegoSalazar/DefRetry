@@ -85,8 +85,6 @@ end
 ### Create a Retrier with default options
 
 ```ruby
-require 'def_retry'
-
 # config/intializers/retrier.rb
 Retrier = DefRetry::Retrier.new({
   on: [ApiError, Timeout],
