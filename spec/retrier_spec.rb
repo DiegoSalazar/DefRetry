@@ -48,7 +48,7 @@ describe DefRetry::Retrier do
       expect(@retries).to be 2
     end
 
-    it 'reraises the exception after done retrying' do
+    it 'reraises the exception by default after done retrying' do
       retrier = DefRetry::Retrier.new({
         on: Exception
       })

@@ -35,18 +35,20 @@ module DefRetry
         @return = block.call
       rescue *@exceptions => e
         @try_count += 1
-        sleep @sleep.call(@try_count) if @sleep
+        run_sleep_strategy if @sleep
         @on_retry.call e, @try_count
 
-        if @try_count < @tries
-          retry
-        elsif @re_raise
-          raise e
-        end
+        @try_count < @tries ? retry : (@re_raise and raise)
       ensure
         @on_ensure.call @return, @try_count
         @return
       end
+    end
+
+    private
+
+    def run_sleep_strategy
+      sleep @sleep.is_a?(Fixnum) ? @sleep : @sleep.call(@try_count)
     end
   end
 end
