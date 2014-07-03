@@ -23,7 +23,7 @@ module DefRetry
       begin
         @exceptions = Array options.fetch(:on)
       rescue KeyError
-        raise ArgumentError, 'You must specify which :exceptions to retry on'
+        raise ArgumentError, 'You must specify which exceptions to retry :on'
       end
     end
 

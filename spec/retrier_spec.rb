@@ -13,7 +13,7 @@ describe DefRetry::Retrier do
   context '#new' do
     it 'requires exceptions to be specified' do
       expect {
-        DefRetry::Retrier.new({}, -> {})
+        DefRetry::Retrier.new({})
       }.to raise_error ArgumentError
     end
 
@@ -97,7 +97,7 @@ describe DefRetry::Retrier do
 
       retrier.run &block_exception
       expect(@exception).to be_kind_of Exception
-      expect(@retry_count).to be 3 # default limit
+      expect(@retry_count).to be 3 # default :tries
     end
 
     it 'passes the return value and retry count to on_ensure' do
@@ -111,7 +111,7 @@ describe DefRetry::Retrier do
 
       retrier.run { :ran }
       expect(@value).to be :ran
-      expect(@retry_count).to be 0 # default limit
+      expect(@retry_count).to be 0
     end
   end
 
