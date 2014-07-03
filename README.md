@@ -87,14 +87,18 @@ end
 ```ruby
 require 'def_retry'
 
+# config/intializers/retrier.rb
 Retrier = DefRetry::Retrier.new({
   on: [ApiError, Timeout],
   tries: 7,
-  on_retry: ->(exception, try_count) { log exception },
-  on_ensure: ->(value, try_count) { log value, try_count },
+  on_retry: ->(exception, try_count) { Logger.debug exception },
+  on_ensure: ->(value, try_count) { Logger.debug value, try_count },
   sleep: :exponential,
-
+  re_raise: false
 })
+
+# later...
+Retrier.run { do_api_call }
 ```
 
 ### Options
