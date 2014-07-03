@@ -9,7 +9,7 @@ module DefRetry
   end
 
   def self.retry(options, &block)
-    Retrier.new(options, block).run
+    Retrier.new(options).run &block
   end
 
   module ClassMethods

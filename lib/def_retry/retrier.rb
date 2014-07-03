@@ -7,11 +7,11 @@ module DefRetry
       exponential: ->(n) { n**2 }
     }
 
-    def initialize(options, block)
-      @block     = block
+    def initialize(options)
       @tries     = options.fetch :tries, DEFAULT_TRIES
       @on_retry  = options.fetch :on_retry, ->(e, n) {}
       @on_ensure = options.fetch :on_ensure, ->(r, n) {}
+      @re_raise  = options.fetch :re_raise, true
       @sleep     = options.fetch :sleep, false
 
       begin
@@ -27,18 +27,22 @@ module DefRetry
       end
     end
 
-    def run
+    def run(&block)
       @try_count = 0
       @return = nil
 
       begin
-        @return = @block.call
+        @return = block.call
       rescue *@exceptions => e
         @try_count += 1
         sleep @sleep.call(@try_count) if @sleep
         @on_retry.call e, @try_count
 
-        retry if @try_count < @tries
+        if @try_count < @tries
+          retry
+        elsif @re_raise
+          raise e
+        end
       ensure
         @on_ensure.call @return, @try_count
         @return
