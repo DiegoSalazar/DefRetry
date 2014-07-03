@@ -17,7 +17,7 @@ module DefRetry
       begin
         @sleep = SLEEP_STRATEGIES.fetch @sleep if @sleep.is_a? Symbol
       rescue KeyError
-        raise ArgumentError, "The :sleep option must be a Proc or one of: #{SLEEP_STRATEGIES.keys.join(', ')}"
+        raise ArgumentError, "The :sleep option must be an Integer, a Proc, or a Symbol: #{SLEEP_STRATEGIES.keys.join(', ')}"
       end
 
       begin

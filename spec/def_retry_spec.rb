@@ -10,17 +10,15 @@ class MockRetryable
 end
 
 describe DefRetry do
-  let(:mock_retryable) { MockRetryable }
-
   context '.def_retry' do
     it 'defines an instance method' do
-      expect(mock_retryable.new).to respond_to :api_call
+      expect(MockRetryable.new).to respond_to :api_call
     end
   end
 
   context '#retryable' do
     it "returns the block's value" do
-      mocked = mock_retryable.new
+      mocked = MockRetryable.new
       expect(mocked.retryable(on: Exception) { 2 + 2 }).to be 4
     end
   end
