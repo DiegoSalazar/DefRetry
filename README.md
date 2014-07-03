@@ -90,6 +90,7 @@ These apply to both `.def_retry` and `#retryable`:
   - `:sleep`: Either a Proc that receives the current try count as its only argument or a Symbol naming one of these sleep strategies: constant, linear, exponential (see: `DefRetry::Retrier::SLEEP_STRATEGIES`)
   - `:on_retry`: A callback to run every time a retry happens i.e. the specified exception(s) are rescued. It will receive the exception that was rescued and the current try count as arguments, respectively.
   - `:on_ensure`: A callback to run at the end before returning the block's value. It will receive the block's return value and the current try count as arguments, respectively.
+  - `:re_raise`: (default true) re raise the exception after done retrying.
 
 ## Contributing
 
