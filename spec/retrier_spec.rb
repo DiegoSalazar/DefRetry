@@ -22,7 +22,7 @@ describe DefRetry::Retrier do
         DefRetry::Retrier.new({
           on: Exception,
           sleep: :invalid
-        }, -> {})
+        })
       }.to raise_error ArgumentError
     end
   end
@@ -32,36 +32,46 @@ describe DefRetry::Retrier do
       the_block = -> { :ran }
       retrier = DefRetry::Retrier.new({
         on: Exception
-      }, the_block)
+      })
 
-      expect(retrier.run).to be :ran
+      expect(retrier.run(&the_block)).to be :ran
     end
 
-    it 'retries on exception :limit times' do
+    it 'retries on exception :tries times' do
       retrier = DefRetry::Retrier.new({
         on: Exception,
-        tries: 2
-      }, block_exception)
+        tries: 2,
+        re_raise: false
+      })
 
-      retrier.run
+      retrier.run &block_exception
       expect(@retries).to be 2
+    end
+
+    it 'reraises the exception after done retrying' do
+      retrier = DefRetry::Retrier.new({
+        on: Exception
+      })
+
+      expect { retrier.run &block_exception }.to raise_error Exception
     end
 
     it 'raises unspecified exceptions' do
       retrier = DefRetry::Retrier.new({
         on: ArgumentError
-      }, block_exception)
+      })
 
-      expect { retrier.run }.to raise_error Exception
+      expect { retrier.run &block_exception }.to raise_error Exception
     end
 
     it 'runs an on_retry callback' do
       retrier = DefRetry::Retrier.new({
         on: Exception,
-        on_retry: ->(e, n) { @did_retry = :yes }
-      }, block_exception)
+        on_retry: ->(e, n) { @did_retry = :yes },
+        re_raise: false
+      })
 
-      retrier.run
+      retrier.run &block_exception
       expect(@did_retry).to be :yes
     end
 
@@ -69,9 +79,9 @@ describe DefRetry::Retrier do
       retrier = DefRetry::Retrier.new({
         on: Exception,
         on_ensure: ->(r, n) { @did_ensure = :yes }
-      }, -> {})
+      })
 
-      retrier.run
+      retrier.run {}
       expect(@did_ensure).to be :yes
     end
 
@@ -81,10 +91,11 @@ describe DefRetry::Retrier do
         on_retry: ->(e, r) {
           @exception = e
           @retry_count = r
-        }
-      }, block_exception)
+        },
+        re_raise: false
+      })
 
-      retrier.run
+      retrier.run &block_exception
       expect(@exception).to be_kind_of Exception
       expect(@retry_count).to be 3 # default limit
     end
@@ -96,9 +107,9 @@ describe DefRetry::Retrier do
           @value = v
           @retry_count = r
         }
-      }, -> { :ran })
+      })
 
-      retrier.run
+      retrier.run { :ran }
       expect(@value).to be :ran
       expect(@retry_count).to be 0 # default limit
     end
@@ -111,11 +122,12 @@ describe DefRetry::Retrier do
         sleep: :constant,
         # the 1st retry will sleep for 1 second
         # the 2nd retry will sleep for 1 second
-        tries: 2
-      }, block_exception)
+        tries: 2,
+        re_raise: false
+      })
 
       start_time = Time.now.to_i
-      retrier.run
+      retrier.run &block_exception
       end_time = Time.now.to_i
 
       expect(end_time - start_time).to be 2
@@ -129,11 +141,12 @@ describe DefRetry::Retrier do
         sleep: :linear,
         # the 1st retry will sleep for 1 second
         # the 2nd retry will sleep for 2 seconds, and so on
-        tries: 2
-      }, block_exception)
+        tries: 2,
+        re_raise: false
+      })
 
       start_time = Time.now.to_i
-      retrier.run
+      retrier.run &block_exception
       end_time = Time.now.to_i
 
       expect(end_time - start_time).to be 3
@@ -147,11 +160,12 @@ describe DefRetry::Retrier do
         sleep: :exponential,
         # the 1st retry will sleep for 1**2 == 1 second
         # the 2nd retry will sleep for 2**2 == 4 seconds
-        tries: 2
-      }, block_exception)
+        tries: 2,
+        re_raise: false
+      })
 
       start_time = Time.now.to_i
-      retrier.run
+      retrier.run &block_exception
       end_time = Time.now.to_i
 
       expect(end_time - start_time).to be 5
