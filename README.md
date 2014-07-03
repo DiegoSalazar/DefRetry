@@ -103,7 +103,7 @@ Retrier.run { do_api_call }
 
 ### Options
 
-These apply to `.def_retry`, `#retryable`, and `DefRetry.retry`:
+These apply to `.def_retry`, `#retryable`, `DefRetry.retry`, and `DefRetry::Retrier.new`:
   - `:on`: A single class or an array of exception classes to be rescued.
   - `:tries`: Integer number of maximum retries to run. DefRetry will stop retrying if the retry count reaches this number.
   - `:sleep`: Either an Integer to pass to `sleep`, a Proc that receives the current try count as its only argument or a Symbol naming one of these sleep strategies: constant, linear, exponential (see: `DefRetry::Retrier::SLEEP_STRATEGIES`).
