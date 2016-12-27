@@ -49,7 +49,7 @@ module DefRetry
     private
 
     def run_sleep_strategy
-      seconds = [(@sleep.respond_to?(:call) ? @sleep.call(@try_count) : @sleep)).to_i, 1].max
+      seconds = [(@sleep.respond_to?(:call) ? @sleep.call(@try_count) : @sleep).to_i, 1].max
       sleep seconds
     end
   end
