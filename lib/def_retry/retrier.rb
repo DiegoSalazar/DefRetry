@@ -8,6 +8,7 @@ module DefRetry
     }
 
     def initialize(options)
+      @args      = options.fetch :args, []
       @tries     = options.fetch :tries, DEFAULT_TRIES
       @on_retry  = options.fetch :on_retry, ->(e, n) {}
       @on_ensure = options.fetch :on_ensure, ->(r, n) {}
@@ -32,7 +33,7 @@ module DefRetry
       @return = nil
 
       begin
-        @return = block.call
+        @return = block.call *@args
       rescue *@exceptions => e
         @try_count += 1
         run_sleep_strategy if @sleep

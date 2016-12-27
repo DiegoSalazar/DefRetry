@@ -32,21 +32,23 @@ require 'def_retry'
 class ApiWrapper
   include DefRetry
 
-  def_retry :get_data, on: ApiError do
+  def_retry :get_data, on: ApiError do |*args|
     do_api_call
   end
 end
 ```
 
-This will define an instance method named `:get_data` and rescue the exception
+This will define an instance method named `get_data` and rescue the exception
 `ApiError` and retry the block:
 
 ```ruby
-do
+do |*args|
   do_api_call
 end
 ```
 3 times (the default).
+
+Any arguments passed to the `get_data(*args)` method will get passed to the block.
 
 ### Retrying a block of code
 

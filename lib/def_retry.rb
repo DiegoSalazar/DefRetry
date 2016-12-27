@@ -14,8 +14,8 @@ module DefRetry
 
   module ClassMethods
     def def_retry(name, options = {}, &block)
-      define_method name do
-        DefRetry.retry options, &block
+      define_method name do |*args|
+        DefRetry.retry options.merge(args: args), &block
       end
     end
   end
